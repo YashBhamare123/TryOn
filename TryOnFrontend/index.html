@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Fitting Room - Virtual Try-On Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="background-layer" id="backgroundLayer">
+        <div class="background-half background-left"></div>
+        <div class="background-half background-right"></div>
+    </div>
+
+    <div class="curtain-layer">
+        <div class="curtain curtain-left"></div>
+        <div class="curtain curtain-right"></div>
+    </div>
+
+    <!-- 3D Scene -->
+    <div class="scene-container">
+        <div class="floating-shape" id="floatingShape">
+            <div class="shape-face face-front"></div>
+            <div class="shape-face face-back"></div>
+            <div class="shape-face face-left"></div>
+            <div class="shape-face face-right"></div>
+            <div class="shape-face face-top"></div>
+            <div class="shape-face face-bottom"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content" id="heroContent">
+                <h1 class="logo">The Fitting Room</h1>
+                <p class="tagline">Your personal style, reimagined. Instantly try on curated vintage and modern looks.</p>
+                <p class="hero-description">
+                    Step into the future of fashion. Upload a photo of yourself and let our AI stylist dress you in our exclusive collection, blending timeless elegance with contemporary design.
+                </p>
+            </div>
+
+            <div class="scroll-indicator">
+                <p>Scroll to begin</p>
+                <div class="scroll-arrow">↓</div>
+            </div>
+        </section>
+
+        <!-- Main Content Section -->
+        <section class="content-section">
+            <div class="main-grid">
+                <!-- Input section -->
+                <div class="fixed-content-container" id="fixedContentContainer">
+                    <div class="input-section" id="inputSection">
+                        <h2 class="section-title">Create Your Look</h2>
+
+                        <div class="file-upload-container">
+                            <label class="file-upload-label">1. Upload your photo</label>
+                            <label for="file-input" class="file-upload-area" id="fileUploadArea">
+                                <span id="fileUploadText">Click or drag to upload</span>
+                            </label>
+                            <input type="file" id="file-input" accept="image/*">
+                        </div>
+
+                        <div class="file-upload-container">
+                            <label class="file-upload-label">2. Upload your clothing item</label>
+                            <label for="file-input-clothing" class="file-upload-area" id="fileUploadAreaClothing">
+                                <span id="fileUploadTextClothing">Click or drag to upload</span>
+                            </label>
+                            <input type="file" id="file-input-clothing" accept="image/*">
+                        </div>
+
+                        <button class="generate-btn" id="generateBtn" onclick="generateImage()">
+                            Try It On
+                        </button>
+                    </div>
+
+                    <!-- Output section -->
+                    <div class="output-section" id="outputSection">
+                        <h2 class="section-title">Your New Look</h2>
+
+                        <div class="image-container" id="imageContainer">
+                            <div class="placeholder" id="placeholder">
+                                <p>Your styled photo will appear here</p>
+                            </div>
+
+                            <div class="loading-animation" id="loadingAnimation">
+                                <div class="spinner"></div>
+                                <div class="loading-text">Styling your look...</div>
+                            </div>
+                        </div>
+
+                        <div class="stylist-notes" id="stylistNotes"></div>
+
+                        <div class="output-footer">
+                            <button class="download-btn" id="downloadBtn" onclick="downloadImage()">
+                                Save Look
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="image-upload.js"></script>
+    <script src="temp-url-service.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
