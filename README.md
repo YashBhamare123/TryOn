@@ -60,8 +60,8 @@ The Fitting Room is a cutting-edge virtual try-on application that uses advanced
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/YashBhamare123/the-fitting-room.git
-cd the-fitting-room
+git clone https://github.com/YashBhamare123/TryOn.git
+cd TryOn
 ```
 
 ### 2. 🐳 ComfyUI Backend Setup (RunPod)
@@ -86,16 +86,22 @@ docker build -t tryon-backend .
    - **Pre-built image**: Use `yashbhamare123/tryon:runpod`
    - **Custom build**: Upload your built image
 3. **Configure the pod**:
-   - Choose GPU: RTX 4090 or better recommended
+   - Choose GPU: A4000 or better recommended
+   - VRAM Requirements : 16 GB (recommended)
    - Set container disk: 50GB minimum (required for models)
    - Expose HTTP port: 8188
 4. **Start the pod** and note the **RunPod Proxy URL**
 5. **Download required models** (first-time setup):
+   ```base
+   # Login to huggingface and enter the access token when prompted
+   huggingface-cli login
+   ```
    ```bash
    # SSH into your RunPod instance and run:
    python hf_models_tryon.py
    ```
    This will download all necessary AI models to their respective folders (~50GB total)
+
 
 ### 3. Backend Setup (Local)
 ```bash
@@ -359,7 +365,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Issues**: [GitHub Issues](https://github.com/YashBhamare123/the-fitting-room/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/YashBhamare123/the-fitting-room/discussions)
-- **Email**: [Contact the maintainer](mailto:your-email@example.com)
+- **Email**: [Contact the maintainer](mailto:thevoiceofyashbhamare@gmail.com)
 
 ---
 
