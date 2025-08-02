@@ -52,9 +52,9 @@ The Fitting Room is a cutting-edge virtual try-on application that uses advanced
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Python 3.8+
+- Docker (recommended) OR Python 3.8+
 - Node.js (for frontend development)
-- ComfyUI server instance
+- RunPod account for ComfyUI backend
 - Cloudinary account (optional)
 - Groq API key
 
@@ -64,11 +64,44 @@ git clone https://github.com/YashBhamare123/the-fitting-room.git
 cd the-fitting-room
 ```
 
-### 2. Backend Setup
+### 2. 🐳 ComfyUI Backend Setup (RunPod)
+
+#### Option A: Use Pre-built Docker Image (Recommended) 🐳
+```bash
+# Pull the pre-built Docker image
+docker pull yashbhamare123/tryon:runpod
+```
+
+#### Option B: Build Docker Image Yourself 🔨
 ```bash
 cd TryOnBackend
 
-# Install dependencies
+# Build the Docker image
+docker build -t tryon-backend .
+```
+
+#### Deploy to RunPod
+1. **Create a RunPod account** at [runpod.io](https://runpod.io)
+2. **Deploy a new pod** using one of these methods:
+   - **Pre-built image**: Use `yashbhamare123/tryon:runpod`
+   - **Custom build**: Upload your built image
+3. **Configure the pod**:
+   - Choose GPU: RTX 4090 or better recommended
+   - Set container disk: 50GB minimum (required for models)
+   - Expose HTTP port: 8188
+4. **Start the pod** and note the **RunPod Proxy URL**
+5. **Download required models** (first-time setup):
+   ```bash
+   # SSH into your RunPod instance and run:
+   python hf_models_tryon.py
+   ```
+   This will download all necessary AI models to their respective folders (~50GB total)
+
+### 3. Backend Setup (Local)
+```bash
+cd TryOnBackend
+
+# Install dependencies (if running locally)
 pip install -r requirements.txt
 
 # Create environment file
@@ -78,11 +111,11 @@ cp .env.example .env
 nano .env
 ```
 
-### 3. Environment Configuration
+### 4. Environment Configuration
 Create a `.env` file in the `TryOnBackend` directory:
 ```env
-# ComfyUI Server Configuration
-runpod_server=https://your-comfyui-server.com
+# RunPod ComfyUI Server Configuration
+runpod_server=https://your-runpod-proxy-url.runpod.net
 
 # Groq API Configuration
 GROQ_API_KEY=your_groq_api_key_here
@@ -91,7 +124,9 @@ GROQ_API_KEY=your_groq_api_key_here
 DEBUG=true
 ```
 
-### 4. Frontend Setup
+**Important**: Replace `your-runpod-proxy-url.runpod.net` with your actual RunPod proxy URL from step 2.
+
+### 5. Frontend Setup
 ```bash
 cd ../TryOnFrontend
 
@@ -100,9 +135,9 @@ cd ../TryOnFrontend
 nano config.js
 ```
 
-### 5. Run the Application
+### 6. Run the Application
 ```bash
-# Start the backend server
+# Start the backend server (local)
 cd TryOnBackend
 python main.py
 
@@ -112,10 +147,11 @@ python -m http.server 8080
 # or use Live Server in VS Code
 ```
 
-### 6. Access the Application
+### 7. Access the Application
 - Frontend: `http://localhost:8080`
 - Backend API: `http://localhost:8100`
 - API Documentation: `http://localhost:8100/docs`
+- RunPod ComfyUI: Your RunPod proxy URL
 
 ## 📁 Project Structure
 
@@ -145,11 +181,18 @@ the-fitting-room/
 ### Backend Configuration
 The backend can be configured through environment variables:
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `runpod_server` | ComfyUI server URL | ✅ |
-| `GROQ_API_KEY` | Groq API key for AI segmentation | ✅ |
-| `DEBUG` | Enable debug logging | ❌ |
+| Variable | Description | Required | Example |
+|----------|-------------|----------|---------|
+| `runpod_server` | RunPod ComfyUI proxy URL | ✅ | `https://abc123-8188.proxy.runpod.net` |
+| `GROQ_API_KEY` | Groq API key for AI segmentation | ✅ | `gsk_...` |
+| `DEBUG` | Enable debug logging | ❌ | `true` |
+
+**Getting your RunPod URL:**
+1. Start your RunPod pod with the ComfyUI image
+2. Go to "My Pods" in RunPod dashboard
+3. Click "Connect" on your running pod
+4. Copy the "HTTP Service [Port 8188]" URL
+5. Use this URL as your `runpod_server` value
 
 ### Frontend Configuration
 Edit `TryOnFrontend/config.js` to configure:
@@ -261,12 +304,18 @@ curl "http://localhost:8100/output?subject_url=test1.jpg&clothes_url=test2.jpg"
 **Backend won't start:**
 - Check if all dependencies are installed: `pip install -r requirements.txt`
 - Verify environment variables in `.env` file
-- Ensure ComfyUI server is accessible
+- Ensure RunPod ComfyUI server is accessible and running
+
+**Models not found errors:**
+- Run the model download script: `python hf_models_tryon.py`
+- Ensure 50GB+ disk space is available
+- Check RunPod pod storage configuration
 
 **Images not processing:**
 - Verify Groq API key is valid
-- Check ComfyUI server status
+- Check RunPod ComfyUI server status
 - Ensure image URLs are accessible
+- Confirm all models are downloaded properly
 
 **Frontend upload issues:**
 - Check Cloudinary configuration in `config.js`
@@ -274,9 +323,10 @@ curl "http://localhost:8100/output?subject_url=test1.jpg&clothes_url=test2.jpg"
 - Check browser console for errors
 
 **Slow processing:**
-- ComfyUI server performance depends on hardware
-- Consider using GPU-enabled instances
-- Check network connectivity to ComfyUI server
+- RunPod server performance depends on GPU selection
+- RTX 4090 or better recommended for optimal speed
+- Check network connectivity to RunPod server
+- Ensure models are fully loaded (first run may be slower)
 
 ## 🤝 Contributing
 
